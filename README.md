@@ -6,7 +6,7 @@ No accounts. No servers. Just good vibes.
 
 ---
 ## Deployed Link
-
+https://hug-in-a-url.netlify.app
 
 ---
 
