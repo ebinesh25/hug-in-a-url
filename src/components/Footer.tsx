@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
           </a>.
           &nbsp;or contribute to this project on&nbsp;
           <a
-            href="https://github.com/ebinesh/hug-in-a-url"
+            href="https://github.com/ebinesh25/hug-in-a-url"
             className="text-hug-primary hover:underline"
             target="_blank"
             rel="noopener noreferrer"
