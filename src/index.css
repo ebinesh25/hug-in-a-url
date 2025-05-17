@@ -1,0 +1,145 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 255 100% 100%;
+    --foreground: 270 6% 10%;
+
+    --card: 255 100% 100%;
+    --card-foreground: 270 6% 10%;
+
+    --popover: 255 100% 100%;
+    --popover-foreground: 270 6% 10%;
+
+    --primary: 259 84% 66%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 259 56% 92%;
+    --secondary-foreground: 259 84% 50%;
+
+    --muted: 270 5% 96%;
+    --muted-foreground: 270 5% 40%;
+
+    --accent: 28 98% 82%;
+    --accent-foreground: 28 80% 40%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 259 40% 85%;
+    --input: 259 40% 80%;
+    --ring: 259 84% 66%;
+
+    --radius: 0.8rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 270 6% 10%;
+    --foreground: 210 40% 98%;
+
+    --card: 270 6% 12%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 270 6% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 259 84% 66%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 259 56% 20%;
+    --secondary-foreground: 259 84% 80%;
+
+    --muted: 270 5% 20%;
+    --muted-foreground: 270 5% 70%;
+
+    --accent: 28 98% 82%;
+    --accent-foreground: 28 80% 30%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 259 40% 30%;
+    --input: 259 40% 40%;
+    --ring: 259 84% 66%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .container-app {
+    @apply px-4 py-6 sm:px-6 md:px-8 lg:px-10 max-w-2xl mx-auto w-full;
+  }
+  
+  .hug-gradient {
+    @apply bg-gradient-to-br from-hug-secondary via-hug-primary to-hug-dark;
+  }
+}
+
+/* Scroll improvements */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.6);
+}
+
+/* Carousel styles */
+.keen-slider {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.keen-slider__slide {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
