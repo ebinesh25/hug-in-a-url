@@ -19,6 +19,9 @@ const normalizeShortUrl = (value: string, fallback: string) => {
     return fallback;
   }
 
+  if (trimmed.startsWith("url.noskill.in") || trimmed.startsWith("url.noskill.in")) {
+    return trimmed;
+  }
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     return trimmed;
   }
