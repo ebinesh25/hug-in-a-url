@@ -19,49 +19,11 @@ interface ShareLinkProps {
 
 const ShareLink = ({ url, onCreateNew, messagePreview }: ShareLinkProps) => {
   const [isCopied, setIsCopied] = useState(false);
-  const [shortUrl, setShortUrl] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Extract the hash part from the URL
-  const hash = url.includes('#') ? url.substring(url.indexOf('#')) : '';
-
-  // Generate a direct link to the view page with the hash
-  const viewUrl = `${window.location.origin}/view${encodeURIComponent(hash)}`;
-
-  // Fetch shortened URL on mount
-  useEffect(() => {
-    const shortenUrl = async () => {
-      try {
-        const response = await fetch("https://url.noskill.in/api/shorten", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ url: viewUrl }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setShortUrl(data.shortUrl || data.url || viewUrl);
-        } else {
-          // Fallback to original URL if shortening fails
-          setShortUrl(viewUrl);
-        }
-      } catch (error) {
-        console.error("Failed to shorten URL:", error);
-        // Fallback to original URL on error
-        setShortUrl(viewUrl);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    shortenUrl();
-  }, [viewUrl]);
+  const shareUrl = url;
   
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(shortUrl || viewUrl);
+      await navigator.clipboard.writeText(shareUrl);
       setIsCopied(true);
       toast.success("Link copied to clipboard!");
 
@@ -81,7 +43,7 @@ const ShareLink = ({ url, onCreateNew, messagePreview }: ShareLinkProps) => {
         await navigator.share({
           title: "Encrypted Hug Message",
           text: "I've sent you a hug message!",
-          url: shortUrl || viewUrl,
+          url: shareUrl,
         });
         toast.success("Shared successfully!");
       } catch (error) {
@@ -117,7 +79,7 @@ const ShareLink = ({ url, onCreateNew, messagePreview }: ShareLinkProps) => {
             
             <div className="flex items-center space-x-2">
               <Input
-                value={isLoading ? "Generating short link..." : (shortUrl || viewUrl)}
+                value={shareUrl}
                 readOnly
                 className="text-sm h-11 font-mono"
                 onClick={(e) => (e.target as HTMLInputElement).select()}

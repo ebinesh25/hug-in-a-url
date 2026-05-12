@@ -10,6 +10,26 @@ import { encryptData, createUrlHash } from "@/utils/encryption";
 import ShareLink from "./ShareLink";
 import { toast } from "sonner";
 
+const SHORTENER_API_URL =
+  import.meta.env.VITE_SHORTENER_API_URL || "https://url.noskill.in/api/shorten";
+
+const normalizeShortUrl = (value: string, fallback: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return fallback;
+  }
+
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith("//")) {
+    return `${window.location.protocol}${trimmed}`;
+  }
+
+  return `${window.location.origin.replace(/\/$/, "")}/${trimmed.replace(/^\/+/, "")}`;
+};
+
 interface MessageFormData {
   to: string;
   from: string;
@@ -56,15 +76,32 @@ const MessageForm = () => {
       
       // Create URL with hash
       const hash = createUrlHash(encrypted, keyString);
-      
-      // Generate full URL with the hash (use current origin)
-      const fullUrl = `${window.location.origin}${hash}`;
-      
-      // console.log("Generated URL hash:", hash);
-      // console.log("Full URL:", fullUrl);
-      
-      // Store share URL
-      setShareUrl(fullUrl);
+
+      // Build the actual page URL the recipient must open.
+      const viewUrl = `${window.location.origin}/view${hash}`;
+
+      try {
+        const response = await fetch(SHORTENER_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url: viewUrl }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Shortener returned ${response.status}`);
+        }
+
+        const responseText = await response.text();
+        const shortenedUrl = normalizeShortUrl(responseText, viewUrl);
+
+        setShareUrl(shortenedUrl);
+      } catch (shortenerError) {
+        console.error("Failed to shorten URL:", shortenerError);
+        toast.error("Created link without shortening");
+        setShareUrl(viewUrl);
+      }
     } catch (error) {
       console.error("Encryption error:", error);
       toast.error("Failed to create encrypted message link");
